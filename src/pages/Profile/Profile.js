@@ -1,90 +1,105 @@
-import { useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import CardUI from "../../components/UI/CardUI";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import Image from "react-bootstrap/Image";
+import AuthContext from "../../store/AuthContext";
 const Profile = () => {
-  const firstNameref = useRef();
-  const lastNameref = useRef();
-  const addressRef = useRef();
-  const cityRef = useRef();
-  const stateRef = useRef();
-  const zipRef = useRef();
-  const submitHandler = (event) => {
+  const fullNameRef = useRef();
+  const imageRef = useRef();
+  const authCtx = useContext(AuthContext);
+  const [getName, setGetName] = useState();
+  const [getImage, setGetImage] = useState();
+  const submitHandler = async (event) => {
     event.preventDefault();
-    const firstNameInput = firstNameref.current.value;
-    const LastNameInput = lastNameref.current.value;
-    const addressInput = addressRef.current.value;
-    const cityInput = cityRef.current.value;
-    const stateInput = stateRef.current.value;
-    const zipInput = zipRef.current.value;
-    const data = {
-      first: firstNameInput,
-      last: LastNameInput,
-      address: addressInput,
-      city: cityInput,
-      state: stateInput,
-      zip: zipInput,
-    };
-    // fetch(
-    //   "https://authentication-581e4-default-rtdb.firebaseio.com/test.json()",
-    //   {
-    //     method: "post",
-    //   }
-    // );
+    const fullNameInput = fullNameRef.current.value;
+    const imageInput = imageRef.current.value;
+    try {
+      const response = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyC_9FkN0G0MqW3Uty3KRdVV2XzE-tuzQeI",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application.json",
+          },
+          body: JSON.stringify({
+            idToken: authCtx.token,
+            displayName: fullNameInput,
+            photoUrl: imageInput,
+            returnSecureToken: true,
+          }),
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      }
+      if (!response.ok) {
+        const data = await response.json();
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseFetch = await fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC_9FkN0G0MqW3Uty3KRdVV2XzE-tuzQeI",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application.json",
+          },
+          body: JSON.stringify({
+            idToken: authCtx.token,
+          }),
+        }
+      );
+      if (responseFetch.ok) {
+        const data = await responseFetch.json();
+        setGetName(data.users[0].displayName);
+        setGetImage(data.users[0].photoUrl);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div>
       <CardUI>
         <Form onSubmit={submitHandler}>
           <Row className="mb-3">
-            <Form.Group as={Col} controlId="formGridEmail">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter First Name"
-                ref={firstNameref}
-              />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridPassword">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Last Name"
-                ref={lastNameref}
-              />
-            </Form.Group>
+            <Col>
+              <Col xs={6} md={4}>
+                <Image src={getImage} roundedCircle />
+                <h4 style={{ textAlign: "center" }}>{getName}</h4>
+              </Col>
+            </Col>
+            <Col>
+              <Form.Group controlId="formGridName" className="mb-3">
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Full Name"
+                  ref={fullNameRef}
+                />
+              </Form.Group>
+              <Form.Group controlId="formGridImage">
+                <Form.Control
+                  type="text"
+                  placeholder="Image Url"
+                  ref={imageRef}
+                />
+              </Form.Group>
+            </Col>
           </Row>
 
-          <Form.Group className="mb-3" controlId="formGridAddress1">
-            <Form.Label>Address</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="1234 Main St"
-              ref={addressRef}
-            />
-          </Form.Group>
-
-          <Row className="mb-3">
-            <Form.Group as={Col} controlId="formGridCity">
-              <Form.Label>City</Form.Label>
-              <Form.Control type="text" ref={cityRef} />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridState">
-              <Form.Label>State</Form.Label>
-              <Form.Control type="text" ref={stateRef} />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId="formGridZip">
-              <Form.Label>Zip</Form.Label>
-              <Form.Control type="text" ref={zipRef} />
-            </Form.Group>
-          </Row>
-
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="submit"
+            style={{ marginLeft: "410px" }}
+          >
             Submit
           </Button>
         </Form>

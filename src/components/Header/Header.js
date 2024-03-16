@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import Badge from "react-bootstrap/Badge";
 import {
   Button,
   Col,
@@ -11,7 +12,7 @@ import {
   NavbarToggle,
   Row,
 } from "react-bootstrap";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import AuthContext from "../../store/AuthContext";
 const Header = (props) => {
   const authCtx = useContext(AuthContext);
@@ -51,7 +52,10 @@ const Header = (props) => {
                           <Nav fill variant="tabs">
                             <Nav.Item>
                               <NavLink to="/profile" className="nav-link">
-                                <h5> Profile</h5>
+                                <h5>
+                                  Profile
+                                  <Badge bg="secondary">Update</Badge>
+                                </h5>
                               </NavLink>
                             </Nav.Item>
                           </Nav>
@@ -60,13 +64,17 @@ const Header = (props) => {
                     </Navbar>
                   </Col>
                   <Col>
-                    <Button
-                      variant="outline-danger"
-                      style={{ marginTop: "17px" }}
-                      onClick={loggedOut}
-                    >
-                      Log Out
-                    </Button>
+                    <NavLink to="/welcome">
+                      <h5>
+                        <Button
+                          variant="primary"
+                          style={{ marginTop: "17px" }}
+                          onClick={loggedOut}
+                        >
+                          Log Out
+                        </Button>
+                      </h5>
+                    </NavLink>
                   </Col>
                 </Row>
               </Container>
