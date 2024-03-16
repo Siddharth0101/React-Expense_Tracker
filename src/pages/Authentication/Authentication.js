@@ -1,15 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-import { redirect } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../store/AuthContext";
 const Authentication = () => {
+  const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
   const [loginError, setLoginError] = useState(false);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
   const emailRef = useRef();
   const passRef = useRef();
   const confirmPassRef = useRef();
@@ -18,6 +21,7 @@ const Authentication = () => {
     setIsLogin((prevState) => !prevState);
     setShowAlert(false);
     setLoginError(false);
+    setRegisterSuccess(false);
   };
 
   const handleRegister = async () => {
@@ -43,6 +47,7 @@ const Authentication = () => {
           }),
         }
       );
+      setRegisterSuccess(true);
     } else {
       const emailInp = emailRef.current.value;
       const passInp = passRef.current.value;
@@ -63,8 +68,9 @@ const Authentication = () => {
       if (response.ok) {
         setLoginError(false);
         const data = await response.json();
-        console.log(data);
-        window.location.href = "/welcome";
+        authCtx.login(data.idToken);
+        navigate("/welcome");
+        localStorage.setItem("token", data.idToken);
       }
       if (!response.ok) {
         const data = await response.json();
@@ -73,7 +79,6 @@ const Authentication = () => {
       }
     }
   };
-
   return (
     <div
       style={{
@@ -161,6 +166,16 @@ const Authentication = () => {
               <p>Please check your email and password and try again.</p>
             </Alert>
           )}
+          {registerSuccess && (
+            <Alert
+              variant="success"
+              onClose={() => setRegisterSuccess(false)}
+              dismissible
+            >
+              <Alert.Heading>Registration Successful!</Alert.Heading>
+              <p>You have successfully registered.</p>
+            </Alert>
+          )}
           <div
             style={{
               display: "flex",
@@ -170,7 +185,7 @@ const Authentication = () => {
           >
             <Button
               onClick={handleRegister}
-              variant={!isLogin ? "primary" : "outline-success"}
+              variant={isLogin ? "primary" : "outline-success"}
               size="lg"
               style={{
                 marginRight: "1rem",
@@ -178,11 +193,11 @@ const Authentication = () => {
                 borderRadius: "8px",
               }}
             >
-              {isLogin ? "Login" : "Register"}
+              {!isLogin ? "Register" : "Login"}
             </Button>
             <Button
               onClick={switchAuthModeHandler}
-              variant={isLogin ? "primary" : "outline-secondary"}
+              variant={!isLogin ? "primary" : "outline-secondary"}
               size="lg"
               style={{
                 width: "8rem",

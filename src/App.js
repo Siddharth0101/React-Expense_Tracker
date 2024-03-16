@@ -4,6 +4,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Authentication from "./pages/Authentication/Authentication";
 import Welcome from "./pages/Welcome/Welcome";
+import AuthProvider from "./store/AuthProvider";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,12 +21,18 @@ function App() {
           path: "/welcome",
           element: <Welcome />,
         },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
       ],
     },
   ]);
   return (
     <div>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </div>
   );
 }
