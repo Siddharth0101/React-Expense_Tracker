@@ -54,7 +54,9 @@ const Header = (props) => {
                               <NavLink to="/profile" className="nav-link">
                                 <h5>
                                   Profile
-                                  <Badge bg="secondary">Update</Badge>
+                                  {!props.forUpdate && (
+                                    <Badge bg="secondary">Update</Badge>
+                                  )}
                                 </h5>
                               </NavLink>
                             </Nav.Item>

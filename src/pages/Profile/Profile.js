@@ -6,12 +6,13 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import AuthContext from "../../store/AuthContext";
-const Profile = () => {
+const Profile = (props) => {
   const fullNameRef = useRef();
   const imageRef = useRef();
   const authCtx = useContext(AuthContext);
   const [getName, setGetName] = useState();
   const [getImage, setGetImage] = useState();
+  const [getUpdate, setGetUpdate] = useState(false);
   const submitHandler = async (event) => {
     event.preventDefault();
     const fullNameInput = fullNameRef.current.value;
@@ -60,12 +61,16 @@ const Profile = () => {
       );
       if (responseFetch.ok) {
         const data = await responseFetch.json();
+        if (data.users[0].displayName && data.users[0].photoUrl) {
+          setGetUpdate(true);
+        }
         setGetName(data.users[0].displayName);
         setGetImage(data.users[0].photoUrl);
       }
     };
     fetchData();
   }, []);
+  props.OnHeader(getUpdate);
   return (
     <div>
       <CardUI>

@@ -6,12 +6,17 @@ import Authentication from "./pages/Authentication/Authentication";
 import Welcome from "./pages/Welcome/Welcome";
 import AuthProvider from "./store/AuthProvider";
 import Profile from "./pages/Profile/Profile";
+import { useState } from "react";
 
 function App() {
+  const [onHeader, setOnHeader] = useState();
+  const headerHandler = (update) => {
+    setOnHeader(update);
+  };
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Header />,
+      element: <Header forUpdate={onHeader} />,
       children: [
         {
           path: "/auth",
@@ -23,7 +28,7 @@ function App() {
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: <Profile OnHeader={headerHandler} />,
         },
       ],
     },

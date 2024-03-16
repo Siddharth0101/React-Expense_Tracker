@@ -16,7 +16,6 @@ const Authentication = () => {
   const emailRef = useRef();
   const passRef = useRef();
   const confirmPassRef = useRef();
-
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
     setShowAlert(false);
