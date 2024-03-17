@@ -16,6 +16,29 @@ const Authentication = () => {
   const emailRef = useRef();
   const passRef = useRef();
   const confirmPassRef = useRef();
+  const forgotPassHandler = async (event) => {
+    event.preventDefault();
+    const emailInp = emailRef.current.value;
+    const response = await fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC_9FkN0G0MqW3Uty3KRdVV2XzE-tuzQeI",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestType: "PASSWORD_RESET",
+          email: emailInp,
+        }),
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+    }
+    if (!response.ok) {
+      const data = await response.json();
+    }
+  };
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
     setShowAlert(false);
@@ -207,6 +230,9 @@ const Authentication = () => {
             </Button>
           </div>
         </Card.Body>
+        <Button variant="outline-dark" size="lg" onClick={forgotPassHandler}>
+          forgot password?
+        </Button>
       </Card>
     </div>
   );

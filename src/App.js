@@ -7,6 +7,7 @@ import Welcome from "./pages/Welcome/Welcome";
 import AuthProvider from "./store/AuthProvider";
 import Profile from "./pages/Profile/Profile";
 import { useState } from "react";
+import Tracker from "./pages/Tracker/Tracker";
 
 function App() {
   const [onHeader, setOnHeader] = useState();
@@ -29,6 +30,10 @@ function App() {
         {
           path: "/profile",
           element: <Profile OnHeader={headerHandler} />,
+        },
+        {
+          path: "/tracker",
+          element: <Tracker />,
         },
       ],
     },
