@@ -33,11 +33,13 @@ const Header = (props) => {
                   <h5> Home</h5>
                 </NavLink>
               </Nav.Item>
-              <NavItem>
-                <NavLink to="/tracker" className="nav-link">
-                  <h5> Tracker</h5>
-                </NavLink>
-              </NavItem>
+              {loggedIn && (
+                <NavItem>
+                  <NavLink to="/tracker" className="nav-link">
+                    <h5> Tracker</h5>
+                  </NavLink>
+                </NavItem>
+              )}
             </Nav>
           </NavbarCollapse>
           {loggedIn && (

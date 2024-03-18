@@ -152,6 +152,9 @@ const Authentication = () => {
                 placeholder="Password"
                 style={{ borderRadius: "8px" }}
               />
+              <Form.Text className="text-muted">
+                Never share your password with anyone
+              </Form.Text>
             </FloatingLabel>
             {!isLogin && (
               <FloatingLabel
