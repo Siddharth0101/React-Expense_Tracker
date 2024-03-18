@@ -91,7 +91,7 @@ const Authentication = () => {
         setLoginError(false);
         const data = await response.json();
         authCtx.login(data.idToken);
-        navigate("/welcome");
+        navigate("/tracker");
         localStorage.setItem("token", data.idToken);
       }
       if (!response.ok) {
