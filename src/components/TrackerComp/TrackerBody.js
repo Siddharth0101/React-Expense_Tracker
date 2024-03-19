@@ -8,10 +8,19 @@ const TrackerBody = () => {
   const [editedItem, setEditedItem] = useState("");
   const [editedPrice, setEditedPrice] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const total = dailyExpense.reduce(
+      (acc, item) => acc + parseFloat(item.price),
+      0
+    );
+    setTotalAmount(total);
+  }, [dailyExpense]);
 
   const fetchData = async () => {
     try {
@@ -108,7 +117,7 @@ const TrackerBody = () => {
       >
         <Card.Body>
           <Card.Title style={{ textAlign: "center" }}>
-            List Of Expenses
+            <h4> List Of Expenses</h4>
           </Card.Title>
           <Card.Text>
             <Table striped bordered hover variant="dark">
@@ -153,6 +162,17 @@ const TrackerBody = () => {
               </tbody>
             </Table>
           </Card.Text>
+          <div
+            style={{
+              marginTop: "20px",
+              textAlign: "left",
+              fontSize: "1.5em",
+              fontWeight: "bold",
+              color: "gray",
+            }}
+          >
+            Total Amount: ${totalAmount.toFixed(2)}
+          </div>
         </Card.Body>
       </Card>
 

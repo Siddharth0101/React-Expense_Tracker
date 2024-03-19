@@ -1,6 +1,10 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import Header from "./components/Header/Header";
 import Authentication from "./pages/Authentication/Authentication";
 import Welcome from "./pages/Welcome/Welcome";
@@ -19,6 +23,10 @@ function App() {
       path: "/",
       element: <Header forUpdate={onHeader} />,
       children: [
+        {
+          path: "/",
+          element: <Navigate to="/welcome" replace />,
+        },
         {
           path: "/auth",
           element: <Authentication />,
@@ -39,7 +47,13 @@ function App() {
     },
   ]);
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "grey",
+        height: "100vh",
+        width: "100vw",
+      }}
+    >
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>

@@ -108,7 +108,9 @@ const Authentication = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        backgroundColor: "#f8f9fa",
+        backgroundColor: "grey",
+        height: "100vh",
+        width: "100vw",
       }}
     >
       <Card
@@ -233,9 +235,11 @@ const Authentication = () => {
             </Button>
           </div>
         </Card.Body>
-        <Button variant="outline-dark" size="lg" onClick={forgotPassHandler}>
-          forgot password?
-        </Button>
+        {isLogin && (
+          <Button variant="outline-dark" size="lg" onClick={forgotPassHandler}>
+            forgot password?
+          </Button>
+        )}
       </Card>
     </div>
   );

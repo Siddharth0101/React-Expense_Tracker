@@ -75,7 +75,7 @@ const Header = (props) => {
                           style={{ marginTop: "17px" }}
                           onClick={loggedOut}
                         >
-                          Log Out
+                          <h5> Log Out</h5>
                         </Button>
                       </h5>
                     </NavLink>
@@ -92,7 +92,7 @@ const Header = (props) => {
                   style={{ marginTop: "17px" }}
                   onClick={loggedOut}
                 >
-                  Log In
+                  <h5> Log In</h5>
                 </Button>
               </h5>
             </NavLink>

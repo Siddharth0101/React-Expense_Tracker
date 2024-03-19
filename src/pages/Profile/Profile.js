@@ -109,8 +109,10 @@ const Profile = (props) => {
           <Row className="mb-3">
             <Col>
               <Col xs={6} md={4}>
-                <Image src={getImage} roundedCircle />
-                <h4 style={{ textAlign: "center" }}>{getName}</h4>
+                <Image src={getImage} roundedCircle className="mb-3" />
+                <h4 style={{ textAlign: "center", marginLeft: "80px" }}>
+                  {getName}
+                </h4>
               </Col>
             </Col>
             <Col>
@@ -137,7 +139,7 @@ const Profile = (props) => {
                   </Col>
                   <Col>
                     <Button onClick={emailUpdateHandler}>
-                      {!disableVerifyEmail ? "verify email" : "email verified"}
+                      {!disableVerifyEmail ? "Verify email" : "Email verified"}
                     </Button>
                   </Col>
                 </Row>
