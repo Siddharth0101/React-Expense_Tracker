@@ -51,6 +51,10 @@ const Authentication = () => {
       const emailInp = emailRef.current.value;
       const passInp = passRef.current.value;
       const confirmInp = confirmPassRef.current.value;
+      if (!emailInp || !passInp || !confirmInp) {
+        setShowAlert(true);
+        return;
+      }
       if (passInp !== confirmInp) {
         setShowAlert(true);
         return;
